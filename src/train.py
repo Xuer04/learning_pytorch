@@ -7,6 +7,7 @@ from tensorboardX import SummaryWriter
 import time
 
 GPU_FLAG = 1 if torch.cuda.is_available() else 0
+device = torch.device("cuda:0") if GPU_FLAG else torch.device("cpu")
 
 # datasets
 datasets = Datasets()
@@ -31,9 +32,12 @@ loss_fn = nn.CrossEntropyLoss()
 lr = 1e-3
 optimizer = torch.optim.SGD(network.parameters(), lr=lr)
 
-if GPU_FLAG:
-    network.cuda()
-    loss_fn.cuda()
+# if GPU_FLAG:
+#     network.cuda()
+#     loss_fn.cuda()
+
+network.to(device)
+loss_fn.to(device)
 
 # training configs
 train_it, test_it = 0, 0
@@ -48,9 +52,11 @@ for epoch in range(epochs):
     network.train() # not necessary
     print(f"---------Traing at epoch {epoch+1}---------")
     for imgs, targets in train_dataloader:
-        if GPU_FLAG:
-            imgs = imgs.cuda()
-            targets = targets.cuda()
+        # if GPU_FLAG:
+        #     imgs = imgs.cuda()
+        #     targets = targets.cuda()
+        imgs.to(device)
+        targets.to(device)
         outputs = network(imgs)
         loss = loss_fn(outputs, targets)
         optimizer.zero_grad()
@@ -70,9 +76,11 @@ for epoch in range(epochs):
     total_accuracy = 0.
     with torch.no_grad():
         for imgs, targets in test_dataloader:
-            if GPU_FLAG:
-                imgs = imgs.cuda()
-                targets = targets.cuda()
+            # if GPU_FLAG:
+            #     imgs = imgs.cuda()
+            #     targets = targets.cuda()
+            imgs.to(device)
+            targets.to(device)
             outputs = network(imgs)
             loss = loss_fn(outputs, targets)
             test_loss += loss
