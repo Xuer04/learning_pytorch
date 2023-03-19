@@ -25,8 +25,8 @@ def save_model(model, model_path):
     torch.save(model, model_path)
 
 
-def load_model(model_path):
-    return torch.load(model_path)
+def load_model(model_path, map_location=None):
+    return torch.load(model_path, map_location=map_location)
 
 
 # method 2: save only network parameters
@@ -34,8 +34,8 @@ def save_model_dict(model, model_path):
     torch.save(model.state_dict(), model_path)
 
 
-def load_model_dict(model, model_path):
-    state_dict = torch.load(model_path)
+def load_model_dict(model, model_path, map_location=None):
+    state_dict = torch.load(model_path, map_location=map_location)
     model.load_state_dict(state_dict)
     return model
 
