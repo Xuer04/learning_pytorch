@@ -55,8 +55,8 @@ for epoch in range(epochs):
         # if GPU_FLAG:
         #     imgs = imgs.cuda()
         #     targets = targets.cuda()
-        imgs.to(device)
-        targets.to(device)
+        imgs = imgs.to(device)
+        targets = targets.to(device)
         outputs = network(imgs)
         loss = loss_fn(outputs, targets)
         optimizer.zero_grad()
@@ -79,8 +79,8 @@ for epoch in range(epochs):
             # if GPU_FLAG:
             #     imgs = imgs.cuda()
             #     targets = targets.cuda()
-            imgs.to(device)
-            targets.to(device)
+            imgs = imgs.to(device)
+            targets = targets.to(device)
             outputs = network(imgs)
             loss = loss_fn(outputs, targets)
             test_loss += loss
